@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "devops-poc.name" . }}
+  labels:
+{{ include "devops-poc.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "devops-poc.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "devops-poc.name" . }}
+    spec:
+      containers:
+       - image: {{ .Values.nginx.image }}
+         name: {{ .Values.nginx.name }}
+         ports:
+         - containerPort: 80
+      

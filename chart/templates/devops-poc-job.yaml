@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ template "devops-poc-worker.name" . }}
+spec:
+  schedule: {{ .Values.job.sechdule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ template "devops-poc-worker.name" . }}
+            image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ['sh', '-c', '{{ .Values.job.command }}']  
+            env:
+            - name: NUM_FILES
+              value: {{ .Values.image.NUM_FILES | quote }}   
+
+          restartPolicy: OnFailure
+      parallelism: {{ .Values.job.parallelism }}
+  concurrencyPolicy: {{ .Values.job.concurrencyPolicy }}

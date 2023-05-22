@@ -1,0 +1,33 @@
+fullnameOverride : ''
+nameOverride: ''
+secrets:
+    name: ""
+    gcpServiceAccountKeyName: ""
+  
+replicaCount: 1
+
+image:
+  repository: us.gcr.io/coral-proj/devops-image-poc
+  tag: 15be29f07885e8e79cc30fa5e15eb62599bfd412
+  pullPolicy: Always
+  NUM_FILES: 10
+
+nginx:
+  image: nginx:stable-perl
+  name: nginx
+
+service:
+  ingress:
+    port: 80
+    host:
+     
+url: devops-nginx1.tech4health.io
+
+
+
+
+job:  
+ sechdule: "0 * * * *"
+ command: /aliaa-worker/start.sh
+ parallelism: 1
+ concurrencyPolicy: Forbid

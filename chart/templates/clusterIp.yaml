@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "devops-poc.name" . }}
+  labels:
+{{- include "devops-poc.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.service.ingress.port }}
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "devops-poc.name" . }}
